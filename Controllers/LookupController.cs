@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text.RegularExpressions;
 using ip_lookup_app.Resources;
 using MaxMind.GeoIP2;
 using MaxMind.GeoIP2.Responses;
@@ -14,6 +15,7 @@ namespace ip_lookup_app.Controllers;
 public class LookupController : ControllerBase
 {
     private readonly ILogger<LookupController> _logger;
+    private readonly string _ipRegex = @"^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
 
     public LookupController(ILogger<LookupController> logger)
     {
@@ -37,15 +39,18 @@ public class LookupController : ControllerBase
             // loop thru the IPS
             foreach (var value in ips)
             {
+                // sanitize
+                var ip = value.Trim();
+
                 // server side IP validation
-                if (IPAddress.TryParse(value.Trim(), out IPAddress? validIP))
+                if (Regex.Match(ip, _ipRegex).Success)
                 {
                     // valid IP
-                    var city = reader.City(validIP);
+                    var city = reader.City(ip);
 
                     response.Add(new CityInfoResource
                     {
-                        IPAddress = validIP.ToString(),
+                        IPAddress = ip,
 
                         AccuracyRadius = city.Location.AccuracyRadius,
                         CityName = city.City.Name,
@@ -70,8 +75,9 @@ public class LookupController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex.Message);
+
             // return error status code
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, new { error = ex.Message });
         }
     }
 }
