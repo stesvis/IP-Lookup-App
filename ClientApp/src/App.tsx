@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { Button, Container, Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { Col, InputGroup, Row } from "reactstrap";
 import React, { useState } from "react";
 
@@ -37,17 +37,20 @@ function App() {
     const text = target.value;
     setText(text);
 
-    console.log("isValid", regexExp.test(text.trim()));
-
     setIsValid(regexExp.test(text.trim()));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const response = await fetch("lookup");
+    const data = await response.json();
+    console.log("response", response);
+    console.log("data", data);
   };
 
   const lookup = async (ip: string) => {};
 
+  return <FetchData></FetchData>;
   return (
     <div className="App">
       <h1 className="text-3xl font-bold h-full text-center">IP Lookup App</h1>
