@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using ip_lookup_app.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,12 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.WriteIndented = true;
     });
 
+// Services
+builder.Services.AddScoped<ILookupService, LookupService>();
+
+//-------------------------------//
 var app = builder.Build();
+//-------------------------------//
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -30,13 +36,13 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseRouting();
 
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller}/{action=Index}/{id?}");
-
 app.MapControllerRoute(
-name: "api",
-pattern: "api/{controller}/{action=Index}/{id?}");
+    name: "default",
+    pattern: "{controller}/{action=Index}/{id?}");
+
+//app.MapControllerRoute(
+//name: "api",
+//pattern: "api/{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
 

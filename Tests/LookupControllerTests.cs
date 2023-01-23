@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Web.Http.Results;
 using ip_lookup_app.Controllers;
 using ip_lookup_app.Resources;
+using ip_lookup_app.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -13,10 +15,14 @@ namespace ip_lookup_app.tests
     public class LookupControllerTests
     {
         private readonly Mock<ILogger<LookupController>> _logger;
+        private readonly Mock<ILookupService> _lookupService;
+        private readonly Mock<IWebHostEnvironment> _hostEnvironment;
 
         public LookupControllerTests()
         {
             _logger = new Mock<ILogger<LookupController>>();
+            _lookupService = new Mock<ILookupService>();
+            _hostEnvironment = new Mock<IWebHostEnvironment>();
         }
 
         [SetUp]
@@ -41,7 +47,7 @@ namespace ip_lookup_app.tests
                 "33.137.198.58",
             };
 
-            var controller = new LookupController(_logger.Object);
+            var controller = new LookupController(_logger.Object, _lookupService.Object);
             var response = controller.LookupCityInfo(ips);
             var okObjectResult = response.Result as OkObjectResult;
 
@@ -72,7 +78,7 @@ namespace ip_lookup_app.tests
                 "33.137.198.58",
             };
 
-            var controller = new LookupController(_logger.Object);
+            var controller = new LookupController(_logger.Object, _lookupService.Object);
             var response = controller.LookupCityInfo(ips);
             var okObjectResult = response.Result as OkObjectResult;
 
@@ -89,7 +95,7 @@ namespace ip_lookup_app.tests
         [Test]
         public void Test_CityLookup_With_Empty_Payload()
         {
-            var controller = new LookupController(_logger.Object);
+            var controller = new LookupController(_logger.Object, _lookupService.Object);
             var response = controller.LookupCityInfo(null);
             var errorObjectResult = response.Result as ObjectResult;
 

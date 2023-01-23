@@ -140,7 +140,7 @@ function App() {
                   value={inputValue}
                 />
                 <Button
-                  disabled={busy}
+                  disabled={!isValid || busy}
                   onClick={() => handleAddIp(inputValue)}
                   variant="secondary">
                   <FontAwesomeIcon icon={faPlusCircle} />
