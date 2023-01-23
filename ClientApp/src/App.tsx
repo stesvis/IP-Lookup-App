@@ -1,4 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-toastify/dist/ReactToastify.css";
 
 import { Button, Form } from "react-bootstrap";
 import { Col, InputGroup, Row } from "reactstrap";
@@ -9,6 +10,7 @@ import CityInfo from "./types/CityInfo";
 import CityInfoItem from "./components/CityInfoItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import IpAddressItem from "./components/IpAddressItem";
+import { ToastContainer } from "react-toastify";
 import { debounce } from "lodash";
 import httpService from "./services/httpService";
 import { toast } from "react-toastify";
@@ -100,8 +102,10 @@ function App() {
       setBusy(true);
       // consume API
       const response = await httpService.post("lookup/city-info", ipAddresses);
+      if (!response) toast.error("Oops! Could not perform the lookup.");
       setCityInfos(response?.data);
     } catch (err) {
+      alert(1);
       toast.error("Oops! Could not perform the lookup.");
     } finally {
       setBusy(false);
@@ -182,6 +186,19 @@ function App() {
           ))}
         </Col>
       </Row>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={1500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 }

@@ -1,14 +1,7 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
-// const instance = axios.create({
-//   baseURL: "https://localhost:3000/",
-//   timeout: 1000,
-//   headers: { Accept: "application/json" },
-// });
-
-axios.defaults.baseURL = `https://localhost:${process.env.REACT_APP_PORT}`;
+axios.defaults.baseURL = `https://localhost:${process.env.REACT_APP_PORT}/api`;
 axios.defaults.headers["Accept"] = "*/*";
-// axios.defaults.headers["Content-Type"] = "application/json";
 
 axios.interceptors.request.use((request) => {
   // console.log("request", request);

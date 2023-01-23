@@ -9,7 +9,7 @@ namespace ip_lookup_app.Controllers;
 /// Controller that handles the IP lookup
 /// </summary>
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class LookupController : ControllerBase
 {
     private readonly ILogger<LookupController> _logger;
