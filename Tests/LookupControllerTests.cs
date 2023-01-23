@@ -56,9 +56,9 @@ namespace ip_lookup_app.tests
             Assert.IsInstanceOf<ActionResult<IEnumerable<CityInfoResource>>>(response);
 
             var items = okObjectResult?.Value as IEnumerable<CityInfoResource>;
-            Assert.That(items.Count(), Is.EqualTo(10)); // check that 10 items are returned
 
-            Assert.IsFalse(items.Any(x => x.Error != null)); // check that there are no errors returned
+            Assert.That(items?.Count(), Is.EqualTo(10)); // check that 10 items are returned
+            Assert.IsFalse(items?.Any(x => x.Error != null)); // check that there are no errors returned
         }
 
         [Test]
@@ -87,9 +87,9 @@ namespace ip_lookup_app.tests
             Assert.IsInstanceOf<ActionResult<IEnumerable<CityInfoResource>>>(response);
 
             var items = okObjectResult?.Value as IEnumerable<CityInfoResource>;
-            Assert.That(items.Count(), Is.EqualTo(10)); // check that 10 items are returned
 
-            Assert.IsTrue(items.Where(x => x.Error != null).Count() == 2); // check that there are 2 errors returned
+            Assert.That(items?.Count(), Is.EqualTo(10)); // check that 10 items are returned
+            Assert.IsTrue(items?.Where(x => x.Error != null).Count() == 2); // check that there are 2 errors returned
         }
 
         [Test]
