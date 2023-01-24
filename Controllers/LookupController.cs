@@ -26,10 +26,20 @@ public class LookupController : ControllerBase
     /// <param name="ips">List of IP addresses to lookup</param>
     /// <returns>List of city info</returns>
     [HttpPost("city-info")]
-    public ActionResult<IEnumerable<CityInfoResource>> LookupCityInfo([FromBody] IEnumerable<string> ips)
+    public ActionResult<IEnumerable<CityInfoResource>> LookupCityInfo([FromBody] IEnumerable<string>? ips)
     {
         try
         {
+            if (ips == null)
+            {
+                return BadRequest("No IPs provided");
+            }
+
+            if (!ips.Any())
+            {
+                return Ok(new List<CityInfoResource>());
+            }
+
             var response = _lookupService.GetCityInfosByIPs(ips);
 
             return Ok(response);

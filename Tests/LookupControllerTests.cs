@@ -1,6 +1,7 @@
 using ip_lookup_app.Controllers;
 using ip_lookup_app.Resources;
 using ip_lookup_app.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -44,7 +45,7 @@ namespace ip_lookup_app.tests
 
             var controller = new LookupController(_logger.Object, _lookupService);
             var response = controller.LookupCityInfo(ips);
-            var okObjectResult = response.Result as OkObjectResult;
+            var okObjectResult = response.Result as ObjectResult;
 
             // Assert
             Assert.IsNotNull(response);
@@ -76,7 +77,7 @@ namespace ip_lookup_app.tests
 
             var controller = new LookupController(_logger.Object, _lookupService);
             var response = controller.LookupCityInfo(ips);
-            var okObjectResult = response.Result as OkObjectResult;
+            var okObjectResult = response.Result as ObjectResult;
 
             // Assert
             Assert.IsNotNull(response);
@@ -93,11 +94,30 @@ namespace ip_lookup_app.tests
         public void Test_CityLookup_With_Empty_Payload()
         {
             var controller = new LookupController(_logger.Object, _lookupService);
+            var response = controller.LookupCityInfo(new List<string>());
+            var okObjectResult = response.Result as ObjectResult;
+
+            // Assert
+            Assert.IsNotNull(response);
+            Assert.IsInstanceOf<OkObjectResult>(okObjectResult);
+            Assert.IsInstanceOf<ActionResult<IEnumerable<CityInfoResource>>>(response);
+
+            var items = okObjectResult?.Value as IEnumerable<CityInfoResource>;
+
+            Assert.That(items?.Count(), Is.EqualTo(0)); // check that 0 items are returned
+        }
+
+        [Test]
+        public void Test_CityLookup_With_No_Payload()
+        {
+            var controller = new LookupController(_logger.Object, _lookupService);
             var response = controller.LookupCityInfo(null);
             var errorObjectResult = response.Result as ObjectResult;
 
             // Assert
-            Assert.That(errorObjectResult?.StatusCode, Is.EqualTo(500));
+            Assert.IsNotNull(response);
+            Assert.IsInstanceOf<BadRequestObjectResult>(errorObjectResult);
+            Assert.That(errorObjectResult?.StatusCode, Is.EqualTo(StatusCodes.Status400BadRequest));
         }
     }
 }
