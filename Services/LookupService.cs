@@ -9,6 +9,11 @@ namespace ip_lookup_app.Services
     {
         private readonly string _ipRegex = @"^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
 
+        /// <summary>
+        /// Parses all the provided IPs and returns the city infos
+        /// </summary>
+        /// <param name="ips"></param>
+        /// <returns></returns>
         public IEnumerable<CityInfoResource> GetCityInfosByIPs(IEnumerable<string> ips)
         {
             var result = new List<CityInfoResource>();
@@ -33,18 +38,30 @@ namespace ip_lookup_app.Services
             if (Regex.Match(ip, _ipRegex).Success)
             {
                 // valid IP
-                var city = reader.City(ip);
-
-                return new CityInfoResource
+                try
                 {
-                    IPAddress = ip,
+                    var city = reader.City(ip);
 
-                    AccuracyRadius = city.Location.AccuracyRadius,
-                    CityName = city.City.Name,
-                    CountryCode = city.Country.IsoCode,
-                    PostalCode = city.Postal.Code,
-                    TimeZone = city.Location.TimeZone
-                };
+                    return new CityInfoResource
+                    {
+                        IPAddress = ip,
+
+                        AccuracyRadius = city.Location.AccuracyRadius,
+                        CityName = city.City.Name,
+                        CountryCode = city.Country.IsoCode,
+                        PostalCode = city.Postal.Code,
+                        TimeZone = city.Location.TimeZone
+                    };
+                }
+                catch (Exception ex)
+                {
+                    // For any exception return the error associated with the IP
+                    return new CityInfoResource
+                    {
+                        IPAddress = ip,
+                        Error = ex.Message,
+                    };
+                }
             }
 
             // invalid IP decided to not fail the request butto return an error instead
