@@ -46,11 +46,11 @@ namespace ip_lookup_app.Services
                     {
                         IPAddress = ip,
 
-                        AccuracyRadius = city.Location.AccuracyRadius,
-                        CityName = city.City.Name,
-                        CountryCode = city.Country.IsoCode,
-                        PostalCode = city.Postal.Code,
-                        TimeZone = city.Location.TimeZone
+                        AccuracyRadius = city?.Location?.AccuracyRadius,
+                        CityName = city?.City?.Name,
+                        CountryCode = city?.Country?.IsoCode,
+                        PostalCode = city?.Postal?.Code,
+                        TimeZone = city?.Location?.TimeZone
                     };
                 }
                 catch (Exception ex)
