@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse, RawAxiosRequestConfig } from "axios";
 
 axios.defaults.baseURL = `https://localhost:${process.env.REACT_APP_PORT}/api`;
 axios.defaults.headers["Accept"] = "*/*";
@@ -26,11 +26,14 @@ axios.interceptors.response.use(
 
 /**
  * DELETE request
- * @param {*} url
- * @param {*} axiosConfig
+ * @param url
+ * @param axiosConfig
  * @returns
  */
-const httpDelete = async (url: string, axiosConfig: any = {}) => {
+const httpDelete = async (
+  url: string,
+  axiosConfig?: RawAxiosRequestConfig<any> | undefined
+) => {
   // console.log(url);
   const response = await axios
     .delete(url, axiosConfig)
@@ -41,11 +44,14 @@ const httpDelete = async (url: string, axiosConfig: any = {}) => {
 
 /**
  * GET request
- * @param {*} url
- * @param {*} axiosConfig
+ * @param url
+ * @param axiosConfig
  * @returns
  */
-const httpGet = async (url: string, axiosConfig: any = {}) => {
+const httpGet = async (
+  url: string,
+  axiosConfig?: RawAxiosRequestConfig<any> | undefined
+) => {
   // console.log(url);
   const response = await axios
     .get(url, axiosConfig)
@@ -56,12 +62,16 @@ const httpGet = async (url: string, axiosConfig: any = {}) => {
 
 /**
  * PATCH request
- * @param {*} url
- * @param {*} data
- * @param {*} axiosConfig
+ * @param url
+ * @param data
+ * @param axiosConfig
  * @returns
  */
-const httpPatch = async (url: any, data: any = {}, axiosConfig: any = {}) => {
+const httpPatch = async (
+  url: any,
+  data?: any,
+  axiosConfig?: RawAxiosRequestConfig<any> | undefined
+) => {
   // console.log(url);
   const response = await axios
     .patch(url, data, axiosConfig)
@@ -72,12 +82,16 @@ const httpPatch = async (url: any, data: any = {}, axiosConfig: any = {}) => {
 
 /**
  * POST request
- * @param {*} url
- * @param {*} data
- * @param {*} axiosConfig
+ * @param url
+ * @param data
+ * @param axiosConfig
  * @returns
  */
-const httpPost = async (url: any, data: any = {}, axiosConfig: any = {}) => {
+const httpPost = async (
+  url: any,
+  data?: any,
+  axiosConfig?: RawAxiosRequestConfig<any> | undefined
+) => {
   // console.log(url);
   const response = await axios
     .post(url, data, axiosConfig)
@@ -87,13 +101,17 @@ const httpPost = async (url: any, data: any = {}, axiosConfig: any = {}) => {
 };
 
 /**
- * PUT request
- * @param {*} url
- * @param {*} data
- * @param {*} axiosConfig
+ *  * PUT request
+ * @param url
+ * @param data
+ * @param axiosConfig
  * @returns
  */
-const httpPut = async (url: any, data: any = {}, axiosConfig: any = {}) => {
+const httpPut = async (
+  url: any,
+  data?: any,
+  axiosConfig?: RawAxiosRequestConfig<any> | undefined
+) => {
   // console.log(url);
   const response = await axios
     .put(url, data, axiosConfig)
