@@ -1,5 +1,9 @@
 # IP Lookup App
 
+- **Assignment** for: Cristian Merli
+- **Contact**: Amy Kalman
+- **Position**: Senior Web Developer/Software Engineer
+
 This app was created with the command `dotnet new react -o ip-lookup-app`, which created a **React** frontend and a **.NET Core** backend.
 Doing it this way allowed me to be able to ship the whole app in one build. Should you want to deploy it, it could host frontend and backend under the same domain.
 
