@@ -9,6 +9,8 @@ Doing it this way allowed me to be able to ship the whole app in one build. Shou
    - Linux: https://learn.microsoft.com/en-us/dotnet/core/install/linux-scripted-manual#scripted-install
 2. Ensure you have an environment variable called `ASPNETCORE_ENVIRONMENT` with value of `Development`.
    - Linux: `export ASPNETCORE_ENVIRONMENT=Development`
+3. Install npm if not already installed
+   - Linux: `sudo apt install npm`
 
 ## Run the app
 
