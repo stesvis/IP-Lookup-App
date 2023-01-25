@@ -1,15 +1,15 @@
 import { Card } from "react-bootstrap";
 import CityInfo from "../types/CityInfo";
 import DetailsRow from "./DetailsRow";
-import React from "react";
 
 type CityInfoItemProps = {
+  className?: string;
   info: CityInfo;
 };
 
-const CityInfoItem = ({ info }: CityInfoItemProps) => {
+const CityInfoItem = ({ className, info }: CityInfoItemProps) => {
   return (
-    <Card className="p-2 w-1/2 m-2">
+    <Card className={`p-2 my-2 ${className}`}>
       <h4 className="text-center mb-3">{info.ipAddress}</h4>
       {(!info.error && (
         <>

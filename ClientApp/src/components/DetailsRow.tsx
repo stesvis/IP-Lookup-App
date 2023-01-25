@@ -1,5 +1,3 @@
-import React from "react";
-
 type DetailsRowProps = {
   className?: string;
   label?: string;
